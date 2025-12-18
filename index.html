@@ -3,121 +3,191 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard DINESERV - Análisis Completo</title>
+    <title>Dashboard DINESERV - Análisis Pro</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
-        body { font-family: 'Inter', sans-serif; }
-        .hero-gradient { background: linear-gradient(135deg, #7cfdfd 0%, #a1ffff 100%); }
-        .tab-active { border-bottom: 3px solid #0891b2; color: #0891b2; font-weight: 700; }
-        .modal { transition: all 0.3s ease-out; }
-        .modal-hidden { opacity: 0; pointer-events: none; transform: scale(0.95); }
+        body { 
+            font-family: 'Plus Jakarta Sans', sans-serif; 
+            background-color: #f8fafc;
+        }
+        .hero-gradient { 
+            background: radial-gradient(circle at top left, #06b6d4 0%, #0891b2 100%); 
+        }
+        .tab-active { 
+            background-color: #0891b2; 
+            color: white !important;
+            box-shadow: 0 4px 12px rgba(8, 145, 178, 0.3);
+        }
+        .modal { transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
+        .modal-hidden { opacity: 0; pointer-events: none; transform: scale(0.98); }
+        .custom-table thead th {
+            background-color: #f1f5f9;
+            color: #64748b;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+        .summary-row:hover { background-color: #f0f9ff; }
     </style>
 </head>
-<body class="bg-gray-50 text-gray-900">
+<body class="text-slate-800 pb-20">
 
-    <header class="hero-gradient py-12 px-4 text-center shadow-sm">
-        <h1 class="text-4xl md:text-5xl font-extrabold text-gray-900 mb-2">Conoce a tus clientes</h1>
-        <p class="text-gray-700 font-medium italic">Análisis DINESERV: Expectativa vs Percepción</p>
+    <header class="hero-gradient pt-16 pb-24 px-4 text-center text-white shadow-lg">
+        <h1 class="text-4xl md:text-6xl font-extrabold mb-3 tracking-tight">Conoce a tus clientes</h1>
+        <p class="text-cyan-100 text-lg font-medium opacity-90">Análisis DINESERV: Brechas de Expectativa vs Percepción</p>
     </header>
 
-    <main class="max-w-5xl mx-auto px-6 -mt-10">
+    <main class="max-w-6xl mx-auto px-6 -mt-16">
         
-        <div class="bg-white rounded-2xl shadow-xl p-6 mb-8 border border-gray-100 flex flex-col items-center">
-            <span class="text-gray-500 uppercase tracking-widest text-xs font-bold mb-1">Participación Total</span>
-            <div class="text-5xl font-black text-cyan-600" id="mainCustomerCount">0</div>
-        </div>
-
-        <div class="bg-white rounded-2xl shadow-xl p-8 mb-10 border border-gray-100">
-            <h2 class="text-2xl font-bold text-gray-800 mb-6">Explorar Clientes Encuestados</h2>
-            <div class="overflow-x-auto">
-                <table class="w-full text-left">
-                    <thead>
-                        <tr class="border-b border-gray-100 text-gray-400 text-xs uppercase">
-                            <th class="py-3 px-4">ID Cliente</th>
-                            <th class="py-3 px-4">Estado</th>
-                            <th class="py-3 px-4 text-center">Acción</th>
-                        </tr>
-                    </thead>
-                    <tbody id="customerTableBody"></tbody>
-                </table>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8 text-center">
+            <div class="bg-white rounded-3xl shadow-xl p-8 border border-slate-100 flex flex-col items-center">
+                <span class="text-slate-400 uppercase tracking-widest text-xs font-bold mb-2">Participación Total</span>
+                <div class="text-6xl font-black text-cyan-600 tracking-tighter" id="mainCustomerCount">0</div>
             </div>
             
-            <div class="flex justify-between items-center mt-6">
-                <span id="pageInfo" class="text-sm text-gray-500 font-bold"></span>
-                <div class="flex gap-2">
-                    <button onclick="changePage(-1)" class="px-4 py-2 border rounded-xl hover:bg-gray-50 transition active:scale-95">Anterior</button>
-                    <button onclick="changePage(1)" class="px-4 py-2 border rounded-xl hover:bg-gray-50 transition active:scale-95">Siguiente</button>
+            <div class="md:col-span-2 bg-cyan-900 rounded-3xl shadow-xl p-8 text-white flex items-center justify-center relative overflow-hidden text-center">
+                <div class="relative z-10">
+                    <h3 class="text-3xl font-bold mb-2">Resumen Ejecutivo</h3>
+                    <p class="text-cyan-200 text-lg">Visualización de la satisfacción y brechas de servicio.</p>
                 </div>
             </div>
         </div>
 
-        <div class="bg-white rounded-2xl shadow-xl p-8 mb-10 border border-gray-100">
-            <h2 class="text-2xl font-bold text-gray-800 mb-6 text-center">Resultados DINESERV - Cliente Aleatorio</h2>
-            
-            <div class="flex flex-wrap justify-center gap-4 mb-8 border-b border-gray-100 pb-2">
-                <button onclick="updateDimension('tangibilidad')" id="btn-tangibilidad" class="px-4 py-2 text-sm font-medium text-gray-500 hover:text-cyan-600 transition-all tab-active">I. Tangibilidad</button>
-                <button onclick="updateDimension('fiabilidad')" id="btn-fiabilidad" class="px-4 py-2 text-sm font-medium text-gray-500 hover:text-cyan-600 transition-all">II. Fiabilidad</button>
-                <button onclick="updateDimension('respuesta')" id="btn-respuesta" class="px-4 py-2 text-sm font-medium text-gray-500 hover:text-cyan-600 transition-all">III. Respuesta</button>
-                <button onclick="updateDimension('garantia')" id="btn-garantia" class="px-4 py-2 text-sm font-medium text-gray-500 hover:text-cyan-600 transition-all">IV. Garantía</button>
-                <button onclick="updateDimension('empatia')" id="btn-empatia" class="px-4 py-2 text-sm font-medium text-gray-500 hover:text-cyan-600 transition-all">V. Empatía</button>
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-10">
+            <div class="lg:col-span-1 bg-white rounded-3xl shadow-xl border border-slate-100 overflow-hidden">
+                <div class="p-6 border-b border-slate-50 flex justify-between items-center text-slate-800">
+                    <h2 class="text-xl font-bold">Encuestados</h2>
+                    <span class="bg-cyan-100 text-cyan-700 text-xs px-2 py-1 rounded-full font-bold">Completado</span>
+                </div>
+                <div class="overflow-y-auto max-h-[480px]">
+                    <table class="w-full text-left">
+                        <tbody id="customerTableBody"></tbody>
+                    </table>
+                </div>
+                <div class="p-4 bg-slate-50 flex justify-between items-center border-t border-slate-100">
+                    <button onclick="changePage(-1)" class="p-2 hover:bg-white rounded-full transition active:scale-90 shadow-sm border border-slate-200">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
+                    </button>
+                    <span id="pageInfo" class="text-[10px] font-black text-slate-500 uppercase"></span>
+                    <button onclick="changePage(1)" class="p-2 hover:bg-white rounded-full transition active:scale-90 shadow-sm border border-slate-200">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+                    </button>
+                </div>
             </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
-                <div class="md:col-span-3">
-                    <h3 class="text-sm font-bold text-gray-400 uppercase mb-4 text-center">Desglose por Ítems</h3>
-                    <div class="relative h-[350px]">
-                        <canvas id="mainChart"></canvas>
+            <div class="lg:col-span-2 bg-white rounded-3xl shadow-xl p-8 border border-slate-100">
+                <div class="flex flex-col md:flex-row justify-between items-center mb-8 gap-4">
+                    <h2 class="text-2xl font-extrabold text-slate-800">Resultados Globales</h2>
+                    <div class="flex flex-wrap justify-center gap-2 p-1 bg-slate-100 rounded-2xl">
+                        <button onclick="updateDimension('tangibilidad')" id="btn-tangibilidad" class="px-3 py-2 text-xs font-bold rounded-xl text-slate-500 transition-all tab-active">I. TAN</button>
+                        <button onclick="updateDimension('fiabilidad')" id="btn-fiabilidad" class="px-3 py-2 text-xs font-bold rounded-xl text-slate-500 transition-all">II. FIA</button>
+                        <button onclick="updateDimension('respuesta')" id="btn-respuesta" class="px-3 py-2 text-xs font-bold rounded-xl text-slate-500 transition-all">III. RES</button>
+                        <button onclick="updateDimension('garantia')" id="btn-garantia" class="px-3 py-2 text-xs font-bold rounded-xl text-slate-500 transition-all">IV. GAR</button>
+                        <button onclick="updateDimension('empatia')" id="btn-empatia" class="px-3 py-2 text-xs font-bold rounded-xl text-slate-500 transition-all">V. EMP</button>
                     </div>
                 </div>
 
-                <div class="md:col-span-1 border-l border-gray-100 pl-4">
-                    <h3 class="text-sm font-bold text-gray-400 uppercase mb-4 text-center">Promedio Total</h3>
-                    <div class="relative h-[350px]">
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                    <div class="md:col-span-3 h-[320px]">
+                        <canvas id="mainChart"></canvas>
+                    </div>
+                    <div class="md:col-span-1 flex flex-col justify-center items-center border-l border-slate-100 h-[320px]">
+                        <span class="text-[10px] font-black text-slate-300 uppercase mb-4 tracking-widest">Promedio</span>
                         <canvas id="avgChart"></canvas>
                     </div>
                 </div>
-            </div>
 
-            <div id="dimensionInfo" class="mt-8 p-4 bg-cyan-50 rounded-xl border border-cyan-100 flex justify-between items-center">
-                <div>
-                    <p class="text-cyan-800 font-semibold text-sm uppercase tracking-wider mb-1">Dimensión Seleccionada:</p>
-                    <p id="dimensionDesc" class="text-gray-700 font-medium">Tangibilidad: Instalaciones, personal y limpieza.</p>
+                <div id="dimensionInfo" class="mt-8 p-6 bg-slate-900 rounded-3xl text-white flex justify-between items-center">
+                    <div>
+                        <p class="text-cyan-400 font-bold text-xs uppercase tracking-widest">Descripción</p>
+                        <p id="dimensionDesc" class="text-slate-200 font-medium"></p>
+                    </div>
+                    <div class="text-right">
+                        <p class="text-slate-400 text-[10px] font-bold uppercase mb-1">Brecha (P-E)</p>
+                        <p id="totalGapText" class="text-3xl font-black text-red-400"></p>
+                    </div>
                 </div>
-                <div class="text-right">
-                    <p class="text-gray-500 text-xs font-bold uppercase">Brecha Total Promedio</p>
-                    <p id="totalGapText" class="text-2xl font-black text-red-500">-0.8</p>
-                </div>
+            </div>
+        </div>
+
+        <div class="bg-white rounded-[2.5rem] shadow-2xl p-10 border border-slate-100">
+            <h2 class="text-3xl font-extrabold text-slate-900 mb-8 tracking-tight">Resumen de Optimización</h2>
+            <div class="overflow-x-auto rounded-3xl border border-slate-100">
+                <table class="w-full text-center">
+                    <thead class="bg-slate-50">
+                        <tr>
+                            <th class="text-left px-6 py-5 text-xs font-black text-slate-400 uppercase tracking-widest">Dimensión</th>
+                            <th class="px-4 py-5 text-xs font-bold text-slate-500">Exp. Base</th>
+                            <th class="px-4 py-5 text-xs font-bold text-slate-500">Perc. Base</th>
+                            <th class="px-4 py-5 text-xs font-bold text-red-500 bg-red-50/30">Brecha Inicial</th>
+                            <th class="px-4 py-5 text-xs font-bold text-cyan-600">Exp. Nueva</th>
+                            <th class="px-4 py-5 text-xs font-bold text-cyan-600">Perc. Nueva</th>
+                            <th class="px-4 py-5 text-xs font-bold text-cyan-800 bg-cyan-50">Brecha Final</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-slate-50">
+                        <tr class="summary-row transition-colors">
+                            <td class="text-left px-6 py-5 font-bold text-slate-700">I. Capacidad de Respuesta</td>
+                            <td>9</td><td>3</td><td class="font-black text-red-600">-6.0</td><td>9.83</td><td>9.53</td><td class="font-black text-cyan-700 bg-cyan-50/20">-0.3</td>
+                        </tr>
+                        <tr class="summary-row transition-colors">
+                            <td class="text-left px-6 py-5 font-bold text-slate-700">II. Garantía</td>
+                            <td>8</td><td>4.17</td><td class="font-black text-red-600">-3.5</td><td>9.48</td><td>9.28</td><td class="font-black text-cyan-700 bg-cyan-50/20">-0.2</td>
+                        </tr>
+                        <tr class="summary-row transition-colors">
+                            <td class="text-left px-6 py-5 font-bold text-slate-700">III. Fiabilidad</td>
+                            <td>8.5</td><td>5.4</td><td class="font-black text-red-600">-2.8</td><td>9.62</td><td>9.32</td><td class="font-black text-cyan-700 bg-cyan-50/20">-0.3</td>
+                        </tr>
+                        <tr class="summary-row transition-colors">
+                            <td class="text-left px-6 py-5 font-bold text-slate-700">IV. Tangibilidad</td>
+                            <td>7.2</td><td>6.4</td><td class="font-black text-red-600">-0.8</td><td>9.10</td><td>7.90</td><td class="font-black text-red-500 bg-red-50/20">-1.2</td>
+                        </tr>
+                        <tr class="summary-row transition-colors">
+                            <td class="text-left px-6 py-5 font-bold text-slate-700">V. Empatía</td>
+                            <td>8</td><td>5.8</td><td class="font-black text-red-600">-2.2</td><td>9.36</td><td>8.96</td><td class="font-black text-cyan-700 bg-cyan-50/30">-0.4</td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
         </div>
     </main>
 
     <div id="modal" class="modal modal-hidden fixed inset-0 w-full h-full flex items-center justify-center z-50 p-4">
-        <div class="absolute inset-0 bg-gray-900/60 backdrop-blur-sm" onclick="toggleModal()"></div>
-        <div class="bg-white w-full max-w-4xl rounded-3xl shadow-2xl z-50 overflow-hidden flex flex-col max-h-[90vh]">
-            <div class="bg-gray-900 p-6 flex justify-between items-center">
-                <h2 class="text-white text-xl font-bold" id="modalTitle">Detalle de Encuesta</h2>
-                <button onclick="toggleModal()" class="text-gray-400 hover:text-white text-3xl font-light">&times;</button>
+        <div class="absolute inset-0 bg-slate-900/40 backdrop-blur-md" onclick="toggleModal()"></div>
+        <div class="bg-white w-full max-w-4xl rounded-[2.5rem] shadow-2xl z-50 overflow-hidden flex flex-col max-h-[90vh]">
+            <div class="bg-slate-900 p-8 flex justify-between items-center text-white">
+                <div>
+                    <h2 class="text-2xl font-black tracking-tight" id="modalTitle">Cargando...</h2>
+                    <p class="text-slate-400 text-xs font-bold uppercase mt-1 tracking-widest">Análisis Detallado por Ítem</p>
+                </div>
+                <button onclick="toggleModal()" class="w-10 h-10 flex items-center justify-center bg-slate-800 rounded-full hover:bg-red-500 transition">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+                </button>
             </div>
 
-            <div class="flex flex-wrap justify-center gap-2 md:gap-4 p-4 border-b bg-gray-50">
-                <button onclick="updateModalChart('tangibilidad')" id="m-btn-tangibilidad" class="m-tab px-3 py-2 text-[10px] font-bold uppercase tracking-wider transition-all">I. Tangibilidad</button>
-                <button onclick="updateModalChart('fiabilidad')" id="m-btn-fiabilidad" class="m-tab px-3 py-2 text-[10px] font-bold uppercase tracking-wider transition-all">II. Fiabilidad</button>
-                <button onclick="updateModalChart('respuesta')" id="m-btn-respuesta" class="m-tab px-3 py-2 text-[10px] font-bold uppercase tracking-wider transition-all">III. Respuesta</button>
-                <button onclick="updateModalChart('garantia')" id="m-btn-garantia" class="m-tab px-3 py-2 text-[10px] font-bold uppercase tracking-wider transition-all">IV. Garantía</button>
-                <button onclick="updateModalChart('empatia')" id="m-btn-empatia" class="m-tab px-3 py-2 text-[10px] font-bold uppercase tracking-wider transition-all">V. Empatía</button>
+            <div class="flex flex-wrap justify-center gap-2 p-4 bg-slate-50 border-b">
+                <button onclick="updateModalChart('tangibilidad')" id="m-btn-tangibilidad" class="m-tab px-4 py-2 text-[10px] font-black uppercase rounded-xl transition-all">I. Tangibilidad</button>
+                <button onclick="updateModalChart('fiabilidad')" id="m-btn-fiabilidad" class="m-tab px-4 py-2 text-[10px] font-black uppercase rounded-xl transition-all">II. Fiabilidad</button>
+                <button onclick="updateModalChart('respuesta')" id="m-btn-respuesta" class="m-tab px-4 py-2 text-[10px] font-black uppercase rounded-xl transition-all">III. Respuesta</button>
+                <button onclick="updateModalChart('garantia')" id="m-btn-garantia" class="m-tab px-4 py-2 text-[10px] font-black uppercase rounded-xl transition-all">IV. Garantía</button>
+                <button onclick="updateModalChart('empatia')" id="m-btn-empatia" class="m-tab px-4 py-2 text-[10px] font-black uppercase rounded-xl transition-all">V. Empatía</button>
             </div>
 
-            <div class="p-8 overflow-y-auto">
-                <div class="h-72 w-full">
+            <div class="p-10 overflow-y-auto">
+                <div class="h-80 w-full mb-6">
                     <canvas id="modalCanvas"></canvas>
                 </div>
-                <p id="modalDesc" class="mt-6 text-center text-gray-500 italic text-sm"></p>
+                <div class="bg-cyan-50 border border-cyan-100 p-4 rounded-2xl flex items-center gap-4">
+                    <div class="bg-cyan-500 p-2 rounded-lg text-white">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                    </div>
+                    <p id="modalDesc" class="text-cyan-800 text-sm font-bold"></p>
+                </div>
             </div>
 
-            <div class="p-4 border-t bg-gray-50 flex justify-end">
-                <button onclick="toggleModal()" class="px-8 py-2 bg-cyan-600 text-white rounded-xl font-bold hover:bg-cyan-700 transition">Cerrar</button>
+            <div class="p-6 bg-slate-50 border-t flex justify-center">
+                <button onclick="toggleModal()" class="px-16 py-3 bg-slate-900 text-white rounded-2xl font-bold hover:bg-cyan-700 transition shadow-lg">Cerrar Análisis</button>
             </div>
         </div>
     </div>
@@ -125,9 +195,9 @@
     <script>
         const dineservData = {
             tangibilidad: { labels: ['T1', 'T2', 'T3', 'T4', 'T5', 'T6', 'T7', 'T8', 'T9', 'T10'], exp: [6, 7, 9, 7, 6, 6, 5, 10, 9, 7], per: [8, 6, 7, 6, 6, 6, 6, 7, 6, 6], avgExp: 7.2, avgPer: 6.4, avgGap: -0.8, desc: 'Tangibilidad: Instalaciones, personal y limpieza.' },
-            fiabilidad: { labels: ['F11', 'F12', 'F13', 'F14', 'F15'], exp: [9, 8, 9, 7, 8], per: [3, 6, 6, 7, 5], avgExp: 8.2, avgPer: 5.4, avgGap: -2.8, desc: 'Fiabilidad: Servicio fiable y preciso.' },
+            fiabilidad: { labels: ['F11', 'F12', 'F13', 'F14', 'F15'], exp: [9, 8, 9, 7, 8], per: [3, 6, 6, 7, 5], avgExp: 8.5, avgPer: 5.4, avgGap: -2.8, desc: 'Fiabilidad: Servicio fiable y preciso.' },
             respuesta: { labels: ['R16', 'R17', 'R18'], exp: [9, 10, 8], per: [4, 2, 3], avgExp: 9.0, avgPer: 3.0, avgGap: -6.0, desc: 'Capacidad de Respuesta: Rapidez y disposición.' },
-            garantia: { labels: ['S19', 'S20', 'S21', 'S22', 'S23', 'S24'], exp: [9, 7, 7, 8, 7, 8], per: [2, 3, 4, 8, 6, 2], avgExp: 7.7, avgPer: 4.2, avgGap: -3.5, desc: 'Garantía: Confianza y conocimientos.' },
+            garantia: { labels: ['S19', 'S20', 'S21', 'S22', 'S23', 'S24'], exp: [9, 7, 7, 8, 7, 8], per: [2, 3, 4, 8, 6, 2], avgExp: 8.0, avgPer: 4.17, avgGap: -3.5, desc: 'Garantía: Confianza y conocimientos.' },
             empatia: { labels: ['E25', 'E26', 'E27', 'E28', 'E29'], exp: [8, 8, 7, 9, 8], per: [7, 4, 8, 4, 6], avgExp: 8.0, avgPer: 5.8, avgGap: -2.2, desc: 'Empatía: Atención personalizada.' }
         };
 
@@ -139,32 +209,34 @@
 
         function initMainCharts() {
             const commonOptions = { 
-                responsive: true, 
-                maintainAspectRatio: false, 
-                scales: { y: { beginAtZero: true, max: 10 } }, 
+                responsive: true, maintainAspectRatio: false, 
+                scales: { y: { beginAtZero: true, max: 10, grid: { color: '#f1f5f9' } }, x: { grid: { display: false } } },
                 plugins: { 
-                    legend: { display: false }, 
-                    tooltip: { 
-                        callbacks: { 
-                            footer: (items) => { 
-                                const e = items[0].chart.data.datasets[0].data[items[0].dataIndex]; 
-                                const p = items[0].chart.data.datasets[1].data[items[0].dataIndex]; 
-                                return `Brecha (P-E): ${(p - e).toFixed(1)}`; 
-                            } 
-                        } 
-                    } 
-                } 
+                    legend: { display: false },
+                    tooltip: {
+                        backgroundColor: '#0f172a',
+                        padding: 12,
+                        callbacks: {
+                            footer: (items) => {
+                                const dataset = items[0].chart.data.datasets;
+                                const e = dataset[0].data[items[0].dataIndex];
+                                const p = dataset[1].data[items[0].dataIndex];
+                                return `Brecha (P - E): ${(p - e).toFixed(1)}`;
+                            }
+                        }
+                    }
+                }
             };
             
             mainChart = new Chart(document.getElementById('mainChart'), { 
                 type: 'bar', 
-                data: { labels: dineservData.tangibilidad.labels, datasets: [{ label: 'E', data: dineservData.tangibilidad.exp, backgroundColor: '#9ca3af' }, { label: 'P', data: dineservData.tangibilidad.per, backgroundColor: '#06b6d4' }] }, 
+                data: { labels: dineservData.tangibilidad.labels, datasets: [{ label: 'Expectativa', data: dineservData.tangibilidad.exp, backgroundColor: '#cbd5e1', borderRadius: 5 }, { label: 'Percepción', data: dineservData.tangibilidad.per, backgroundColor: '#06b6d4', borderRadius: 5 }] }, 
                 options: commonOptions 
             });
             
             avgChart = new Chart(document.getElementById('avgChart'), { 
                 type: 'bar', 
-                data: { labels: ['PROMEDIO'], datasets: [{ label: 'E', data: [dineservData.tangibilidad.avgExp], backgroundColor: '#4b5563' }, { label: 'P', data: [dineservData.tangibilidad.avgPer], backgroundColor: '#0891b2' }] }, 
+                data: { labels: ['PROM.'], datasets: [{ data: [dineservData.tangibilidad.avgExp], backgroundColor: '#475569', borderRadius: 10 }, { data: [dineservData.tangibilidad.avgPer], backgroundColor: '#0891b2', borderRadius: 10 }] }, 
                 options: commonOptions 
             });
         }
@@ -190,13 +262,20 @@
             const start = (currentPage - 1) * perPage;
             const end = Math.min(start + perPage, TOTAL_CUSTOMERS);
             for (let i = start; i < end; i++) {
-                tbody.innerHTML += `<tr class="border-b border-gray-50 hover:bg-cyan-50/50 transition-colors">
-                    <td class="py-4 px-4 font-bold text-gray-700">#CUST-${1000+i}</td>
-                    <td class="py-4 px-4 text-xs font-bold text-green-600 uppercase">● Completado</td>
-                    <td class="py-4 px-4 text-center"><button onclick="openSurvey(${i})" class="bg-gray-900 text-white text-[10px] px-4 py-2 rounded-lg font-black hover:bg-cyan-600 transition uppercase">Ver Encuesta</button></td>
+                tbody.innerHTML += `
+                <tr class="hover:bg-slate-50 transition-colors cursor-pointer group border-b border-slate-50" onclick="openSurvey(${i})">
+                    <td class="py-3 px-6">
+                        <div class="flex items-center gap-3">
+                            <div class="w-7 h-7 rounded-full bg-slate-100 flex items-center justify-center text-[9px] font-black text-slate-400">#</div>
+                            <span class="font-bold text-slate-700 text-sm">C-${1000+i}</span>
+                        </div>
+                    </td>
+                    <td class="py-3 px-6 text-right">
+                        <span class="text-[10px] font-black text-cyan-600 opacity-0 group-hover:opacity-100 transition-opacity uppercase tracking-tighter">Analizar</span>
+                    </td>
                 </tr>`;
             }
-            document.getElementById('pageInfo').innerText = `Mostrando ${start+1}-${end} de ${TOTAL_CUSTOMERS}`;
+            document.getElementById('pageInfo').innerText = `${start+1}-${end} de ${TOTAL_CUSTOMERS}`;
         }
 
         function changePage(step) {
@@ -216,30 +295,17 @@
         }
 
         function openSurvey(id) {
-            document.getElementById('modalTitle').innerText = `Análisis Individual: Cliente #CUST-${1000+id}`;
+            document.getElementById('modalTitle').innerText = `Cliente #C-${1000+id}`;
             currentModalClientData = {};
-            
             for(let key in dineservData) {
                 const len = dineservData[key].labels.length;
-                
-                // Lógica de generación: Expectativa siempre > Percepción y valores <= 8
-                let expectations = [];
-                let perceptions = [];
-                
+                let expectations = [], perceptions = [];
                 for(let i = 0; i < len; i++) {
-                    // Genera Expectativa entre 5 y 8 (evita 9 y 10)
                     const exp = Math.floor(Math.random() * 4) + 5; 
-                    // Genera Percepción siempre menor que la expectativa (mínimo 1)
                     const per = Math.floor(Math.random() * (exp - 2)) + 2;
-                    
-                    expectations.push(exp);
-                    perceptions.push(per);
+                    expectations.push(exp); perceptions.push(per);
                 }
-
-                currentModalClientData[key] = {
-                    exp: expectations,
-                    per: perceptions
-                };
+                currentModalClientData[key] = { exp: expectations, per: perceptions };
             }
             toggleModal();
             updateModalChart('tangibilidad');
@@ -260,24 +326,24 @@
                 data: { 
                     labels: labels, 
                     datasets: [
-                        { label: 'E', data: data.exp, backgroundColor: '#9ca3af' }, 
-                        { label: 'P', data: data.per, backgroundColor: '#06b6d4' }
+                        { label: 'Expectativa (E)', data: data.exp, backgroundColor: '#cbd5e1', borderRadius: 8 }, 
+                        { label: 'Percepción (P)', data: data.per, backgroundColor: '#06b6d4', borderRadius: 8 }
                     ] 
                 },
                 options: { 
-                    responsive: true, 
-                    maintainAspectRatio: false, 
-                    scales: { y: { beginAtZero: true, max: 10 } }, 
+                    responsive: true, maintainAspectRatio: false, 
+                    scales: { y: { beginAtZero: true, max: 10 } },
                     plugins: { 
-                        legend: { display: false },
+                        legend: { position: 'top', align: 'end' },
                         tooltip: {
+                            backgroundColor: '#0f172a',
+                            padding: 12,
                             callbacks: {
                                 footer: (items) => {
                                     const index = items[0].dataIndex;
-                                    const eValue = data.exp[index];
-                                    const pValue = data.per[index];
-                                    const gap = pValue - eValue;
-                                    return `Brecha (P-E): ${gap.toFixed(1)}`;
+                                    const e = data.exp[index];
+                                    const p = data.per[index];
+                                    return `Brecha (P - E): ${(p - e).toFixed(1)}`;
                                 }
                             }
                         }
@@ -289,6 +355,7 @@
         window.onload = () => {
             initMainCharts();
             renderTable();
+            updateDimension('tangibilidad');
             let c = 0;
             const t = setInterval(() => {
                 c += 20;
