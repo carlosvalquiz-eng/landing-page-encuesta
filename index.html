@@ -218,11 +218,27 @@
         function openSurvey(id) {
             document.getElementById('modalTitle').innerText = `Análisis Individual: Cliente #CUST-${1000+id}`;
             currentModalClientData = {};
+            
             for(let key in dineservData) {
                 const len = dineservData[key].labels.length;
+                
+                // Lógica de generación: Expectativa siempre > Percepción y valores <= 8
+                let expectations = [];
+                let perceptions = [];
+                
+                for(let i = 0; i < len; i++) {
+                    // Genera Expectativa entre 5 y 8 (evita 9 y 10)
+                    const exp = Math.floor(Math.random() * 4) + 5; 
+                    // Genera Percepción siempre menor que la expectativa (mínimo 1)
+                    const per = Math.floor(Math.random() * (exp - 2)) + 2;
+                    
+                    expectations.push(exp);
+                    perceptions.push(per);
+                }
+
                 currentModalClientData[key] = {
-                    exp: Array.from({length: len}, () => Math.floor(Math.random() * 5) + 5),
-                    per: Array.from({length: len}, () => Math.floor(Math.random() * 10) + 1)
+                    exp: expectations,
+                    per: perceptions
                 };
             }
             toggleModal();
@@ -256,7 +272,6 @@
                         legend: { display: false },
                         tooltip: {
                             callbacks: {
-                                // Muestra la brecha (Percepción - Expectativa) en el tooltip del modal
                                 footer: (items) => {
                                     const index = items[0].dataIndex;
                                     const eValue = data.exp[index];
