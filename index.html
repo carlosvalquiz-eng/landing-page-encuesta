@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard DINESERV - Análisis Pro</title>
+    <title>Dashboard DINESERV - 2024 & 2025</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
@@ -22,11 +22,11 @@
 
     <header class="hero-gradient pt-16 pb-32 px-4 text-center text-white shadow-lg relative">
         <div class="absolute top-6 right-6 flex gap-2">
-            <button onclick="changeYear(2023)" id="year-2023" class="year-btn px-5 py-2 rounded-xl text-sm font-bold">2023</button>
             <button onclick="changeYear(2024)" id="year-2024" class="year-btn px-5 py-2 rounded-xl text-sm font-bold">2024</button>
+            <button onclick="changeYear(2025)" id="year-2025" class="year-btn px-5 py-2 rounded-xl text-sm font-bold">2025</button>
         </div>
         <h1 class="text-5xl md:text-6xl font-extrabold mb-3 tracking-tight">Conoce a tus clientes</h1>
-        <p class="text-white text-lg font-medium opacity-90" id="headerSubtitle">Análisis DINESERV: Brechas de Expectativa vs Percepción</p>
+        <p class="text-white text-lg font-medium opacity-90">Análisis DINESERV: Brechas de Expectativa vs Percepción</p>
     </header>
 
     <main class="max-w-6xl mx-auto px-6 overlap-container">
@@ -89,17 +89,17 @@
         </div>
 
         <div class="bg-white rounded-[2.5rem] shadow-2xl p-10 border border-slate-100">
-            <h2 class="text-3xl font-extrabold text-slate-900 mb-8 tracking-tight">Resumen de Optimización</h2>
+            <h2 class="text-3xl font-extrabold text-slate-900 mb-8 tracking-tight">Resumen de Optimización (Proyección)</h2>
             <div class="overflow-x-auto rounded-3xl border border-slate-100">
                 <table class="w-full text-center">
                     <thead class="bg-slate-50">
                         <tr>
                             <th class="text-left px-6 py-5 text-xs font-black text-slate-400 uppercase tracking-widest">Dimensión</th>
-                            <th class="px-4 py-5 text-xs font-bold text-slate-500">Exp. Base</th>
-                            <th class="px-4 py-5 text-xs font-bold text-slate-500">Perc. Base</th>
+                            <th class="px-4 py-5 text-xs font-bold text-slate-500">Exp. 2024</th>
+                            <th class="px-4 py-5 text-xs font-bold text-slate-500">Perc. 2024</th>
                             <th class="px-4 py-5 text-xs font-bold text-red-500 bg-red-50/30">Brecha Inicial</th>
-                            <th class="px-4 py-5 text-xs font-bold text-cyan-600">Exp. Nueva</th>
-                            <th class="px-4 py-5 text-xs font-bold text-cyan-600">Perc. Nueva</th>
+                            <th class="px-4 py-5 text-xs font-bold text-cyan-600">Exp. 2025</th>
+                            <th class="px-4 py-5 text-xs font-bold text-cyan-600">Perc. 2025</th>
                             <th class="px-4 py-5 text-xs font-bold text-cyan-800 bg-cyan-50">Brecha Final</th>
                         </tr>
                     </thead>
@@ -115,7 +115,7 @@
             <div class="bg-slate-900 p-8 flex justify-between items-center text-white">
                 <div>
                     <h2 class="text-2xl font-black tracking-tight" id="modalTitle">Detalle Cliente</h2>
-                    <p class="text-slate-400 text-xs font-bold uppercase mt-1 tracking-widest">Análisis Individual</p>
+                    <p class="text-slate-400 text-xs font-bold uppercase mt-1 tracking-widest">Análisis por Ítem</p>
                 </div>
                 <button onclick="toggleModal()" class="w-10 h-10 flex items-center justify-center bg-slate-800 rounded-full hover:bg-red-500 transition"><svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg></button>
             </div>
@@ -128,50 +128,44 @@
 
     <script>
         const yearlyData = {
-            2023: {
+            2024: {
                 customers: 1353,
                 dineserv: {
-                    tangibilidad: { labels: ['T1', 'T2', 'T3', 'T4', 'T5', 'T6', 'T7', 'T8', 'T9', 'T10'], exp: [6, 7, 9, 7, 6, 6, 5, 10, 9, 7], per: [8, 6, 7, 6, 6, 6, 6, 7, 6, 6], avgExp: 7.2, avgPer: 6.4, avgGap: -0.8, desc: 'Tangibilidad: Instalaciones, personal y limpieza.' },
-                    fiabilidad: { labels: ['F11', 'F12', 'F13', 'F14', 'F15'], exp: [9, 8, 9, 7, 8], per: [3, 6, 6, 7, 5], avgExp: 8.5, avgPer: 5.4, avgGap: -2.8, desc: 'Fiabilidad: Servicio fiable y preciso.' },
-                    respuesta: { labels: ['R16', 'R17', 'R18'], exp: [9, 10, 8], per: [4, 2, 3], avgExp: 9.0, avgPer: 3.0, avgGap: -6.0, desc: 'Capacidad de Respuesta: Rapidez y disposición.' },
-                    garantia: { labels: ['S19', 'S20', 'S21', 'S22', 'S23', 'S24'], exp: [9, 7, 7, 8, 7, 8], per: [2, 3, 4, 8, 6, 2], avgExp: 8.0, avgPer: 4.17, avgGap: -3.5, desc: 'Garantía: Confianza y conocimientos.' },
-                    empatia: { labels: ['E25', 'E26', 'E27', 'E28', 'E29'], exp: [8, 8, 7, 9, 8], per: [7, 4, 8, 4, 6], avgExp: 8.0, avgPer: 5.8, avgGap: -2.2, desc: 'Empatía: Atención personalizada.' }
-                },
-                summary: [
-                    { name: "I. Capacidad de Respuesta", eb: 9, pb: 3, bi: -6, en: 9.83, pn: 9.53, bf: -0.3 },
-                    { name: "II. Garantía", eb: 8, pb: 4.17, bi: -3.5, en: 9.48, pn: 9.28, bf: -0.2 },
-                    { name: "III. Fiabilidad", eb: 8.5, pb: 5.4, bi: -2.8, en: 9.62, pn: 9.32, bf: -0.3 },
-                    { name: "IV. Tangibilidad", eb: 7.2, pb: 6.4, bi: -0.8, en: 9.1, pn: 7.9, bf: -1.2 },
-                    { name: "V. Empatía", eb: 8, pb: 5.8, bi: -2.2, en: 9.36, pn: 8.96, bf: -0.4 }
-                ]
+                    tangibilidad: { labels: ['T1', 'T2', 'T3', 'T4', 'T5', 'T6', 'T7', 'T8', 'T9', 'T10'], exp: [6, 7, 9, 7, 6, 6, 5, 10, 9, 7], per: [8, 6, 7, 6, 6, 6, 6, 7, 6, 6], avgExp: 7.2, avgPer: 6.4, avgGap: -0.8, desc: 'Tangibilidad: Instalaciones físicas y limpieza.' },
+                    fiabilidad: { labels: ['F11', 'F12', 'F13', 'F14', 'F15'], exp: [9, 8, 9, 7, 8], per: [3, 6, 6, 7, 5], avgExp: 8.5, avgPer: 5.4, avgGap: -2.8, desc: 'Fiabilidad: Cumplimiento y exactitud del servicio.' },
+                    respuesta: { labels: ['R16', 'R17', 'R18'], exp: [9, 10, 8], per: [4, 2, 3], avgExp: 9.0, avgPer: 3.0, avgGap: -6.0, desc: 'Capacidad de Respuesta: Rapidez de atención.' },
+                    garantia: { labels: ['S19', 'S20', 'S21', 'S22', 'S23', 'S24'], exp: [9, 7, 7, 8, 7, 8], per: [2, 3, 4, 8, 6, 2], avgExp: 8.0, avgPer: 4.17, avgGap: -3.5, desc: 'Garantía: Seguridad y competencia del personal.' },
+                    empatia: { labels: ['E25', 'E26', 'E27', 'E28', 'E29'], exp: [8, 8, 7, 9, 8], per: [7, 4, 8, 4, 6], avgExp: 8.0, avgPer: 5.8, avgGap: -2.2, desc: 'Empatía: Trato personalizado y amable.' }
+                }
             },
-            2024: {
+            2025: {
                 customers: 1815,
                 dineserv: {
-                    tangibilidad: { labels: ['T1', 'T2', 'T3', 'T4', 'T5', 'T6', 'T7', 'T8', 'T9', 'T10'], avgExp: 9.1, avgPer: 7.9, avgGap: -1.2, desc: 'Tangibilidad 2024.' },
-                    fiabilidad: { labels: ['F11', 'F12', 'F13', 'F14', 'F15'], avgExp: 9.62, avgPer: 9.32, avgGap: -0.3, desc: 'Fiabilidad 2024.' },
-                    respuesta: { labels: ['R16', 'R17', 'R18'], avgExp: 9.83, avgPer: 9.53, avgGap: -0.3, desc: 'Respuesta 2024.' },
-                    garantia: { labels: ['S19', 'S20', 'S21', 'S22', 'S23', 'S24'], avgExp: 9.48, avgPer: 9.28, avgGap: -0.2, desc: 'Garantía 2024.' },
-                    empatia: { labels: ['E25', 'E26', 'E27', 'E28', 'E29'], avgExp: 9.36, avgPer: 8.96, avgGap: -0.4, desc: 'Empatía 2024.' }
-                },
-                summary: [
-                    { name: "I. Capacidad de Respuesta", eb: 9, pb: 3, bi: -6, en: 9.83, pn: 9.53, bf: -0.3 },
-                    { name: "II. Garantía", eb: 8, pb: 4.17, bi: -3.5, en: 9.48, pn: 9.28, bf: -0.2 },
-                    { name: "III. Fiabilidad", eb: 8.5, pb: 5.4, bi: -2.8, en: 9.62, pn: 9.32, bf: -0.3 },
-                    { name: "IV. Tangibilidad", eb: 7.2, pb: 6.4, bi: -0.8, en: 9.1, pn: 7.9, bf: -1.2 },
-                    { name: "V. Empatía", eb: 8, pb: 5.8, bi: -2.2, en: 9.36, pn: 8.96, bf: -0.4 }
-                ]
+                    tangibilidad: { labels: ['T1', 'T2', 'T3', 'T4', 'T5', 'T6', 'T7', 'T8', 'T9', 'T10'], avgExp: 9.1, avgPer: 7.9, avgGap: -1.2, desc: 'Proyección Tangibilidad 2025.' },
+                    fiabilidad: { labels: ['F11', 'F12', 'F13', 'F14', 'F15'], avgExp: 9.62, avgPer: 9.32, avgGap: -0.3, desc: 'Proyección Fiabilidad 2025.' },
+                    respuesta: { labels: ['R16', 'R17', 'R18'], avgExp: 9.83, avgPer: 9.53, avgGap: -0.3, desc: 'Proyección Respuesta 2025.' },
+                    garantia: { labels: ['S19', 'S20', 'S21', 'S22', 'S23', 'S24'], avgExp: 9.48, avgPer: 9.28, avgGap: -0.2, desc: 'Proyección Garantía 2025.' },
+                    empatia: { labels: ['E25', 'E26', 'E27', 'E28', 'E29'], avgExp: 9.36, avgPer: 8.96, avgGap: -0.4, desc: 'Proyección Empatía 2025.' }
+                }
             }
         };
 
-        let currentYear = 2023;
+        const summaryData = [
+            { name: "I. Capacidad de Respuesta", eb: 9, pb: 3, bi: -6, en: 9.83, pn: 9.53, bf: -0.3 },
+            { name: "II. Garantía", eb: 8, pb: 4.17, bi: -3.5, en: 9.48, pn: 9.28, bf: -0.2 },
+            { name: "III. Fiabilidad", eb: 8.5, pb: 5.4, bi: -2.8, en: 9.62, pn: 9.32, bf: -0.3 },
+            { name: "IV. Tangibilidad", eb: 7.2, pb: 6.4, bi: -0.8, en: 9.1, pn: 7.9, bf: -1.2 },
+            { name: "V. Empatía", eb: 8, pb: 5.8, bi: -2.2, en: 9.36, pn: 8.96, bf: -0.4 }
+        ];
+
+        let currentYear = 2024;
         let currentDimension = 'tangibilidad';
         let currentPage = 1;
         const perPage = 10;
         let mainChart, avgChart, modalChart;
 
         function changeYear(year) {
-            currentYear = year;
+            currentYear = parseInt(year);
             document.querySelectorAll('.year-btn').forEach(btn => btn.classList.remove('year-active'));
             document.getElementById('year-' + year).classList.add('year-active');
             document.getElementById('mainCustomerCount').innerText = yearlyData[year].customers;
@@ -182,8 +176,8 @@
 
         function renderSummaryTable() {
             const tbody = document.getElementById('summaryTableBody');
-            tbody.innerHTML = yearlyData[currentYear].summary.map(row => `
-                <tr class="summary-row transition-colors">
+            tbody.innerHTML = summaryData.map(row => `
+                <tr class="transition-colors border-b border-slate-50">
                     <td class="text-left px-6 py-5 font-bold text-slate-700">${row.name}</td>
                     <td>${row.eb}</td><td>${row.pb}</td><td class="font-black text-red-600">${row.bi}</td>
                     <td>${row.en}</td><td>${row.pn}</td><td class="font-black text-cyan-700 bg-cyan-50">${row.bf}</td>
@@ -196,10 +190,10 @@
             const data = yearlyData[currentYear].dineserv[dim];
             let expData, perData;
 
-            if (currentYear === 2024) {
-                // Números enteros aleatorios para los ítems individuales en 2024
-                expData = data.labels.map(() => Math.floor(Math.random() * 2) + 6); // 6-7 (Enteros)
-                perData = data.labels.map(() => Math.floor(Math.random() * 2) + 8); // 8-9 (Enteros)
+            if (currentYear === 2025) {
+                // Simulación 2025: Enteros aleatorios, Azul (P) hasta 9 y mayor que Gris (E)
+                expData = data.labels.map(() => Math.floor(Math.random() * 2) + 6); // 6-7
+                perData = data.labels.map(() => Math.floor(Math.random() * 2) + 8); // 8-9
             } else {
                 expData = data.exp;
                 perData = data.per;
@@ -221,28 +215,15 @@
             document.getElementById('btn-' + dim).classList.add('tab-active');
         }
 
-        function renderTable() {
-            const tbody = document.getElementById('customerTableBody');
-            tbody.innerHTML = '';
-            const total = yearlyData[currentYear].customers;
-            const start = (currentPage - 1) * perPage;
-            const end = Math.min(start + perPage, total);
-            for (let i = start; i < end; i++) {
-                tbody.innerHTML += `<tr class="hover:bg-slate-50 transition-colors cursor-pointer group border-b border-slate-50" onclick="openSurvey(${i})"><td class="py-3 px-6"><div class="flex items-center gap-3"><div class="w-7 h-7 rounded-full bg-slate-100 flex items-center justify-center text-[9px] font-black text-slate-400">#</div><span class="font-bold text-slate-700 text-sm">C-${1000+i}</span></div></td><td class="py-3 px-6 text-right"><span class="text-[10px] font-black text-cyan-600 opacity-0 group-hover:opacity-100 transition-opacity uppercase tracking-tighter">Analizar</span></td></tr>`;
-            }
-            document.getElementById('pageInfo').innerText = `${start+1}-${end} de ${total}`;
-        }
-
         function openSurvey(id) {
             document.getElementById('modalTitle').innerText = `Cliente #C-${1000+id}`;
-            const dim = currentDimension;
-            const labels = yearlyData[currentYear].dineserv[dim].labels;
+            const labels = yearlyData[currentYear].dineserv[currentDimension].labels;
             let e = [], p = [];
 
             for(let i = 0; i < labels.length; i++) {
-                if (currentYear === 2024) {
-                    e.push(Math.floor(Math.random() * 2) + 6); // Enteros 6-7
-                    p.push(Math.floor(Math.random() * 2) + 8); // Enteros 8-9
+                if (currentYear === 2025) {
+                    e.push(Math.floor(Math.random() * 2) + 6);
+                    p.push(Math.floor(Math.random() * 2) + 8);
                 } else {
                     let ev = Math.floor(Math.random() * 4) + 5;
                     e.push(ev); p.push(Math.floor(Math.random() * (ev - 2)) + 2);
@@ -256,8 +237,8 @@
                 modalChart = new Chart(ctx, {
                     type: 'bar',
                     data: { labels: labels, datasets: [
-                        { label: 'E', data: e, backgroundColor: '#cbd5e1', borderRadius: 8 },
-                        { label: 'P', data: p, backgroundColor: '#06b6d4', borderRadius: 8 }
+                        { label: 'Expectativa', data: e, backgroundColor: '#cbd5e1', borderRadius: 8 },
+                        { label: 'Percepción', data: p, backgroundColor: '#06b6d4', borderRadius: 8 }
                     ]},
                     options: { 
                         responsive: true, maintainAspectRatio: false, 
@@ -265,14 +246,23 @@
                         plugins: { legend: { display: false }, tooltip: { callbacks: { footer: (i) => `Brecha (P-E): ${(i[0].chart.data.datasets[1].data[i[0].dataIndex] - i[0].chart.data.datasets[0].data[i[0].dataIndex]).toFixed(2)}` } } }
                     }
                 });
-                document.getElementById('modalDesc').innerText = yearlyData[currentYear].dineserv[dim].desc;
+                document.getElementById('modalDesc').innerText = yearlyData[currentYear].dineserv[currentDimension].desc;
             }, 50);
         }
 
-        function toggleModal() {
-            document.getElementById('modal').classList.toggle('modal-hidden');
+        function renderTable() {
+            const tbody = document.getElementById('customerTableBody');
+            tbody.innerHTML = '';
+            const total = yearlyData[currentYear].customers;
+            const start = (currentPage - 1) * perPage;
+            const end = Math.min(start + perPage, total);
+            for (let i = start; i < end; i++) {
+                tbody.innerHTML += `<tr class="hover:bg-slate-50 transition-colors cursor-pointer group border-b border-slate-50" onclick="openSurvey(${i})"><td class="py-3 px-6"><div class="flex items-center gap-3"><div class="w-7 h-7 rounded-full bg-slate-100 flex items-center justify-center text-[9px] font-black text-slate-400">#</div><span class="font-bold text-slate-700 text-sm">C-${1000+i}</span></div></td><td class="py-3 px-6 text-right"><span class="text-[10px] font-black text-cyan-600 opacity-0 group-hover:opacity-100 transition-opacity uppercase tracking-tighter">Analizar</span></td></tr>`;
+            }
+            document.getElementById('pageInfo').innerText = `${start+1}-${end} de ${total}`;
         }
 
+        function toggleModal() { document.getElementById('modal').classList.toggle('modal-hidden'); }
         function changePage(s) { currentPage = Math.max(1, Math.min(currentPage + s, Math.ceil(yearlyData[currentYear].customers/perPage))); renderTable(); }
 
         function initMainCharts() {
@@ -285,7 +275,7 @@
             avgChart = new Chart(document.getElementById('avgChart'), { type: 'bar', data: { labels: ['PROM.'], datasets: [{ data: [], backgroundColor: '#475569', borderRadius: 10 }, { data: [], backgroundColor: '#0891b2', borderRadius: 10 }] }, options: commonOpt });
         }
 
-        window.onload = () => { initMainCharts(); changeYear(2023); };
+        window.onload = () => { initMainCharts(); changeYear(2024); };
     </script>
 </body>
 </html>
