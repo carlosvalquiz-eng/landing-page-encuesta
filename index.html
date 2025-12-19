@@ -16,8 +16,6 @@
         .overlap-container { position: relative; z-index: 20; margin-top: -80px; }
         .modal { transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
         .modal-hidden { opacity: 0; pointer-events: none; transform: scale(0.98); }
-        
-        /* Estilos Encuesta */
         .input-focus:focus { border-color: #00bcd4; box-shadow: 0 0 0 4px rgba(0, 188, 212, 0.1); outline: none; }
         .modal-success { transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); }
         input[type="number"]::-webkit-inner-spin-button, input[type="number"]::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
@@ -154,10 +152,11 @@
                 </div>
                 <div>
                     <h3 class="font-bold text-lg text-slate-800">Instrucciones de Calificación</h3>
-                    <p class="text-slate-500 text-sm leading-relaxed">Califique cada aspecto del 0 al 10. Evalúe su Expectativa (E) vs la Percepción (P).</p>
+                    <p class="text-slate-500 text-sm leading-relaxed">
+                        Por favor, califique cada aspecto del <span class="font-bold text-cyan-600">0 al 10</span>. Siendo 0 "Totalmente en desacuerdo" y 10 "Totalmente de acuerdo". Evalúe su <strong>Expectativa (E)</strong> vs la <strong>Percepción (P)</strong>.
+                    </p>
                 </div>
             </div>
-
             <form id="servqualForm" class="space-y-8">
                 <div class="bg-white rounded-[2.5rem] shadow-2xl overflow-hidden border border-slate-100">
                     <div class="overflow-x-auto">
@@ -175,9 +174,7 @@
                     </div>
                 </div>
                 <div class="flex justify-center pt-4">
-                    <button type="submit" class="group px-12 py-4 bg-slate-900 text-white font-bold rounded-2xl shadow-xl hover:bg-cyan-600 transition-all duration-300">
-                        Enviar Resultados
-                    </button>
+                    <button type="submit" class="group px-12 py-4 bg-slate-900 text-white font-bold rounded-2xl shadow-xl hover:bg-cyan-600 transition-all duration-300">Enviar Resultados</button>
                 </div>
             </form>
         </main>
@@ -201,7 +198,6 @@
     </div>
 
     <script>
-        // DATOS DASHBOARD
         const yearlyData = {
             2024: { customers: 1353, dineserv: { tangibilidad: { labels: ['T1', 'T2', 'T3', 'T4', 'T5', 'T6', 'T7', 'T8', 'T9', 'T10'], exp: [6, 7, 9, 7, 6, 6, 5, 10, 9, 7], per: [8, 6, 7, 6, 6, 6, 6, 7, 6, 6], avgExp: 7.2, avgPer: 6.4, avgGap: -0.8, desc: 'Tangibilidad: Instalaciones físicas y limpieza.' }, fiabilidad: { labels: ['F11', 'F12', 'F13', 'F14', 'F15'], exp: [9, 8, 9, 7, 8], per: [3, 6, 6, 7, 5], avgExp: 8.5, avgPer: 5.4, avgGap: -2.8, desc: 'Fiabilidad: Cumplimiento y exactitud del servicio.' }, respuesta: { labels: ['R16', 'R17', 'R18'], exp: [9, 10, 8], per: [4, 2, 3], avgExp: 9.0, avgPer: 3.0, avgGap: -6.0, desc: 'Capacidad de Respuesta: Rapidez de atención.' }, garantia: { labels: ['S19', 'S20', 'S21', 'S22', 'S23', 'S24'], exp: [9, 7, 7, 8, 7, 8], per: [2, 3, 4, 8, 6, 2], avgExp: 8.0, avgPer: 4.17, avgGap: -3.5, desc: 'Garantía: Seguridad y competencia del personal.' }, empatia: { labels: ['E25', 'E26', 'E27', 'E28', 'E29'], exp: [8, 8, 7, 9, 8], per: [7, 4, 8, 4, 6], avgExp: 8.0, avgPer: 5.8, avgGap: -2.2, desc: 'Empatía: Trato personalizado y amable.' } } },
             2025: { customers: 1815, dineserv: { tangibilidad: { labels: ['T1', 'T2', 'T3', 'T4', 'T5', 'T6', 'T7', 'T8', 'T9', 'T10'], avgExp: 9.1, avgPer: 7.9, avgGap: -1.2, desc: 'Proyección Tangibilidad 2025.' }, fiabilidad: { labels: ['F11', 'F12', 'F13', 'F14', 'F15'], avgExp: 9.62, avgPer: 9.32, avgGap: -0.3, desc: 'Proyección Fiabilidad 2025.' }, respuesta: { labels: ['R16', 'R17', 'R18'], avgExp: 9.83, avgPer: 9.53, avgGap: -0.3, desc: 'Proyección Respuesta 2025.' }, garantia: { labels: ['S19', 'S20', 'S21', 'S22', 'S23', 'S24'], avgExp: 9.48, avgPer: 9.28, avgGap: -0.2, desc: 'Proyección Garantía 2025.' }, empatia: { labels: ['E25', 'E26', 'E27', 'E28', 'E29'], avgExp: 9.36, avgPer: 8.96, avgGap: -0.4, desc: 'Proyección Empatía 2025.' } } }
@@ -215,7 +211,6 @@
             { name: "V. Empatía", eb: 8, pb: 5.8, bi: -2.2, en: 9.36, pn: 8.96, bf: -0.4 }
         ];
 
-        // DATOS ENCUESTA
         const surveyQuestions = [
             { cat: "I. Tangibilidad", items: [{ id: "T1", q: "Instalaciones exteriores y estacionamiento atractivo." }, { id: "T2", q: "El área de comedor es visualmente atractiva." }, { id: "T3", q: "El personal luce limpio y bien vestido." }, { id: "T8", q: "Los baños del restaurante están muy limpios." }] },
             { cat: "II. Fiabilidad", items: [{ id: "F11", q: "Sirven la comida/bebida en el tiempo prometido." }, { id: "F13", q: "El servicio es confiable y consistente." }, { id: "F15", q: "La comida es servida tal como fue ordenada." }] },
@@ -230,40 +225,20 @@
         const perPage = 10;
         let mainChart, avgChart, modalChart;
 
-        // FUNCIONES DE NAVEGACIÓN
-        function showSurvey() {
-            document.getElementById('dashboardView').classList.add('hidden-view');
-            document.getElementById('surveyView').classList.remove('hidden-view');
-            renderSurveyTable();
-            window.scrollTo(0,0);
-        }
+        function showSurvey() { document.getElementById('dashboardView').classList.add('hidden-view'); document.getElementById('surveyView').classList.remove('hidden-view'); renderSurveyTable(); window.scrollTo(0,0); }
+        function showDashboard() { document.getElementById('surveyView').classList.add('hidden-view'); document.getElementById('dashboardView').classList.remove('hidden-view'); window.scrollTo(0,0); }
 
-        function showDashboard() {
-            document.getElementById('surveyView').classList.add('hidden-view');
-            document.getElementById('dashboardView').classList.remove('hidden-view');
-            window.scrollTo(0,0);
-        }
-
-        // FUNCIONES DASHBOARD
         function changeYear(year) {
             currentYear = parseInt(year);
             document.querySelectorAll('.year-btn').forEach(btn => btn.classList.remove('year-active'));
             document.getElementById('year-' + year).classList.add('year-active');
             document.getElementById('mainCustomerCount').innerText = yearlyData[year].customers;
-            renderTable();
-            renderSummaryTable();
-            updateDimension(currentDimension);
+            renderTable(); renderSummaryTable(); updateDimension(currentDimension);
         }
 
         function renderSummaryTable() {
             const tbody = document.getElementById('summaryTableBody');
-            tbody.innerHTML = summaryData.map(row => `
-                <tr class="transition-colors border-b border-slate-50">
-                    <td class="text-left px-6 py-5 font-bold text-slate-700">${row.name}</td>
-                    <td>${row.eb}</td><td>${row.pb}</td><td class="font-black text-red-600">${row.bi}</td>
-                    <td>${row.en}</td><td>${row.pn}</td><td class="font-black text-cyan-700 bg-cyan-50">${row.bf}</td>
-                </tr>
-            `).join('');
+            tbody.innerHTML = summaryData.map(row => `<tr><td class="text-left px-6 py-5 font-bold text-slate-700">${row.name}</td><td>${row.eb}</td><td>${row.pb}</td><td class="font-black text-red-600">${row.bi}</td><td>${row.en}</td><td>${row.pn}</td><td class="font-black text-cyan-700 bg-cyan-50">${row.bf}</td></tr>`).join('');
         }
 
         function updateDimension(dim) {
@@ -273,10 +248,7 @@
             if (currentYear === 2025) {
                 expData = data.labels.map(() => Math.floor(Math.random() * 2) + 6);
                 perData = data.labels.map(() => Math.floor(Math.random() * 2) + 8);
-            } else {
-                expData = data.exp;
-                perData = data.per;
-            }
+            } else { expData = data.exp; perData = data.per; }
             mainChart.data.labels = data.labels;
             mainChart.data.datasets[0].data = expData;
             mainChart.data.datasets[1].data = perData;
@@ -290,21 +262,6 @@
             document.querySelectorAll('button[id^="btn-"]').forEach(btn => btn.classList.remove('tab-active'));
             document.getElementById('btn-' + dim).classList.add('tab-active');
         }
-
-        function renderTable() {
-            const tbody = document.getElementById('customerTableBody');
-            tbody.innerHTML = '';
-            const total = yearlyData[currentYear].customers;
-            const start = (currentPage - 1) * perPage;
-            const end = Math.min(start + perPage, total);
-            for (let i = start; i < end; i++) {
-                tbody.innerHTML += `<tr class="hover:bg-slate-50 transition-colors cursor-pointer group border-b border-slate-50" onclick="openSurvey(${i})"><td class="py-3 px-6"><div class="flex items-center gap-3"><div class="w-7 h-7 rounded-full bg-slate-100 flex items-center justify-center text-[9px] font-black text-slate-400">#</div><span class="font-bold text-slate-700 text-sm">C-${1000+i}</span></div></td><td class="py-3 px-6 text-right"><span class="text-[10px] font-black text-cyan-600 opacity-0 group-hover:opacity-100 transition-opacity uppercase tracking-tighter">Analizar</span></td></tr>`;
-            }
-            document.getElementById('pageInfo').innerText = `${start+1}-${end} de ${total}`;
-        }
-
-        function toggleModal() { document.getElementById('modal').classList.toggle('modal-hidden'); }
-        function changePage(s) { currentPage = Math.max(1, Math.min(currentPage + s, Math.ceil(yearlyData[currentYear].customers/perPage))); renderTable(); }
 
         function openSurvey(id) {
             document.getElementById('modalTitle').innerText = `Cliente #C-${1000+id}`;
@@ -321,43 +278,48 @@
                 modalChart = new Chart(ctx, {
                     type: 'bar',
                     data: { labels: labels, datasets: [ { label: 'Expectativa', data: e, backgroundColor: '#cbd5e1', borderRadius: 8 }, { label: 'Percepción', data: p, backgroundColor: '#06b6d4', borderRadius: 8 } ]},
-                    options: { responsive: true, maintainAspectRatio: false, scales: { y: { beginAtZero: true, max: 10 } }, plugins: { legend: { display: false } } }
+                    options: { 
+                        responsive: true, maintainAspectRatio: false, 
+                        scales: { y: { beginAtZero: true, max: 10 } },
+                        plugins: { legend: { display: false }, tooltip: { callbacks: { footer: (i) => `Brecha (P-E): ${(i[0].chart.data.datasets[1].data[i[0].dataIndex] - i[0].chart.data.datasets[0].data[i[0].dataIndex]).toFixed(2)}` } } }
+                    }
                 });
                 document.getElementById('modalDesc').innerText = yearlyData[currentYear].dineserv[currentDimension].desc;
             }, 50);
         }
 
-        // FUNCIONES DE LA ENCUESTA
+        function renderTable() {
+            const tbody = document.getElementById('customerTableBody'); tbody.innerHTML = '';
+            const total = yearlyData[currentYear].customers;
+            const start = (currentPage - 1) * perPage; const end = Math.min(start + perPage, total);
+            for (let i = start; i < end; i++) {
+                tbody.innerHTML += `<tr class="hover:bg-slate-50 transition-colors cursor-pointer group border-b border-slate-50" onclick="openSurvey(${i})"><td class="py-3 px-6"><div class="flex items-center gap-3"><div class="w-7 h-7 rounded-full bg-slate-100 flex items-center justify-center text-[9px] font-black text-slate-400">#</div><span class="font-bold text-slate-700 text-sm">C-${1000+i}</span></div></td><td class="py-3 px-6 text-right"><span class="text-[10px] font-black text-cyan-600 opacity-0 group-hover:opacity-100 transition-opacity uppercase tracking-tighter">Analizar</span></td></tr>`;
+            }
+            document.getElementById('pageInfo').innerText = `${start+1}-${end} de ${total}`;
+        }
+
         function renderSurveyTable() {
-            const body = document.getElementById('formBody');
-            let html = '';
+            const body = document.getElementById('formBody'); let html = '';
             surveyQuestions.forEach(dimension => {
                 html += `<tr class="bg-slate-50/50"><td colspan="4" class="px-6 py-3 text-[10px] font-black text-cyan-600 uppercase tracking-[0.2em]">${dimension.cat}</td></tr>`;
                 dimension.items.forEach(item => {
-                    html += `<tr class="hover:bg-slate-50/80 transition-colors">
-                        <td class="px-6 py-4 text-xs font-bold text-slate-300 text-center italic">${item.id}</td>
-                        <td class="px-6 py-4 text-sm font-medium text-slate-700">${item.q}</td>
-                        <td class="px-4 py-4 text-center"><input type="number" name="${item.id}E" min="0" max="10" required class="w-12 h-10 bg-slate-100 border-none rounded-xl text-center font-bold text-slate-600 input-focus transition-all"></td>
-                        <td class="px-4 py-4 text-center"><input type="number" name="${item.id}P" min="0" max="10" required class="w-12 h-10 bg-cyan-50 border-none rounded-xl text-center font-bold text-cyan-700 input-focus transition-all"></td>
-                    </tr>`;
+                    html += `<tr><td class="px-6 py-4 text-xs font-bold text-slate-300 text-center italic">${item.id}</td><td class="px-6 py-4 text-sm font-medium text-slate-700">${item.q}</td><td class="px-4 py-4 text-center"><input type="number" name="${item.id}E" min="0" max="10" required class="w-12 h-10 bg-slate-100 rounded-xl text-center font-bold text-slate-600 input-focus transition-all"></td><td class="px-4 py-4 text-center"><input type="number" name="${item.id}P" min="0" max="10" required class="w-12 h-10 bg-cyan-50 rounded-xl text-center font-bold text-cyan-700 input-focus transition-all"></td></tr>`;
                 });
             });
             body.innerHTML = html;
         }
 
-        document.getElementById('servqualForm').onsubmit = (e) => {
-            e.preventDefault();
-            document.getElementById('successModal').classList.remove('modal-hidden');
-        };
-
-        function closeSurveyModal() {
-            document.getElementById('successModal').classList.add('modal-hidden');
-            document.getElementById('servqualForm').reset();
-            showDashboard();
-        }
+        function toggleModal() { document.getElementById('modal').classList.toggle('modal-hidden'); }
+        function changePage(s) { currentPage = Math.max(1, Math.min(currentPage + s, Math.ceil(yearlyData[currentYear].customers/perPage))); renderTable(); }
+        function closeSurveyModal() { document.getElementById('successModal').classList.add('modal-hidden'); document.getElementById('servqualForm').reset(); showDashboard(); }
+        document.getElementById('servqualForm').onsubmit = (e) => { e.preventDefault(); document.getElementById('successModal').classList.remove('modal-hidden'); };
 
         function initMainCharts() {
-            const commonOpt = { responsive: true, maintainAspectRatio: false, scales: { y: { beginAtZero: true, max: 10, grid: { color: '#f1f5f9' } }, x: { grid: { display: false } } }, plugins: { legend: { display: false } } };
+            const commonOpt = { 
+                responsive: true, maintainAspectRatio: false, 
+                scales: { y: { beginAtZero: true, max: 10, grid: { color: '#f1f5f9' } }, x: { grid: { display: false } } },
+                plugins: { legend: { display: false }, tooltip: { callbacks: { footer: (i) => `Brecha (P-E): ${(i[0].chart.data.datasets[1].data[i[0].dataIndex] - i[0].chart.data.datasets[0].data[i[0].dataIndex]).toFixed(2)}` } } }
+            };
             mainChart = new Chart(document.getElementById('mainChart'), { type: 'bar', data: { labels: [], datasets: [{ data: [], backgroundColor: '#cbd5e1', borderRadius: 5 }, { data: [], backgroundColor: '#00bcd4', borderRadius: 5 }] }, options: commonOpt });
             avgChart = new Chart(document.getElementById('avgChart'), { type: 'bar', data: { labels: ['PROM.'], datasets: [{ data: [], backgroundColor: '#475569', borderRadius: 10 }, { data: [], backgroundColor: '#0891b2', borderRadius: 10 }] }, options: commonOpt });
         }
